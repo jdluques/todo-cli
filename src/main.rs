@@ -1,8 +1,11 @@
 mod models;
 mod table;
+mod utils;
+mod commands;
+
 
 fn main() {
-    let tasks = vec![
+    let mut tasks = vec![
         models::Task{ name: String::from("Task 1"), status: models::TaskStatus::NotStarted },
         models::Task{ name: String::from("Task 2"), status: models::TaskStatus::InProgress },
         models::Task{ name: String::from("Task 3"), status: models::TaskStatus::Completed },
@@ -11,5 +14,14 @@ fn main() {
         models::Task{ name: String::from("Task 6"), status: models::TaskStatus::NotStarted },
     ];
 
-    table::render_table(&tasks);
+    loop {
+        table::render_table(&tasks);
+
+        let options = vec!["Add Task", "Exit"];
+        match utils::select_option("Choose an action:", &options) {
+            Some("Add Task") => commands::add::add_task(&mut tasks),
+            Some("Exit") | None => break,
+            _ => (),
+        }
+    }
 }
