@@ -8,33 +8,21 @@ mod cli;
 use clap::Parser;
 
 fn main() {
-    let args = cli::CliArgs::parse();
+    let args = cli::args::CliArgs::parse();
 
     let mut config = config::Config::load();
 
     if let Some(config_params) = args.config {
-        let (key, value) = if let Some((key, value)) = config_params.split_once('=') {
-            (key.trim(), value.trim())
-        } else if let Some((key, value)) = config_params.split_once(':') {
-            (key.trim(), value.trim())
-        } else {
-            eprintln!("Invalid format for --config. Use `key=value` or `key:value`.");
-            return;
-        };
-
-        match key {
-            "tasks_file_path" => config.tasks_file_path = value.trim_matches(|c| c == '"' || c == '\'').to_string(),
-            _ => {
-                eprintln!("Unknown configuration key: {}", key);
-                return;
-            }
-        }
-
-        config.save();
-        println!("Configuration updated successfully!");
-        return;
+        cli::flags_actions::handle_config::handle_config(config_params, &mut config);
+    }
+    else {
+        execute_program(&config);
     }
 
+    
+}
+
+fn execute_program(config: &config::Config) {
     let tasks_file_path = &config.tasks_file_path;
     
     utils::terminal::init_screen();
