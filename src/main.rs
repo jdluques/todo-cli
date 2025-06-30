@@ -22,14 +22,12 @@ fn main() {
             terminal::cli::flags_handlers::handle_visual::handle_visual(tasks_file_path);
         }
         else {
-            execute_program(tasks_file_path);
+            execute_interactive_mode(tasks_file_path);
         }
-    }
-
-    
+    }    
 }
 
-fn execute_program(tasks_file_path: &String) {
+fn execute_interactive_mode(tasks_file_path: &String) {
     terminal::rendering::screen::init_screen();
 
     let result = std::panic::catch_unwind(|| {
