@@ -3,9 +3,37 @@ mod table;
 mod utils;
 mod commands;
 mod config;
+mod cli;
+
+use clap::Parser;
 
 fn main() {
-    let config = config::Config::load();
+    let args = cli::CliArgs::parse();
+
+    let mut config = config::Config::load();
+
+    if let Some(config_params) = args.config {
+        let (key, value) = if let Some((key, value)) = config_params.split_once('=') {
+            (key.trim(), value.trim())
+        } else if let Some((key, value)) = config_params.split_once(':') {
+            (key.trim(), value.trim())
+        } else {
+            eprintln!("Invalid format for --config. Use `key=value` or `key:value`.");
+            return;
+        };
+
+        match key {
+            "tasks_file_path" => config.tasks_file_path = value.trim_matches(|c| c == '"' || c == '\'').to_string(),
+            _ => {
+                eprintln!("Unknown configuration key: {}", key);
+                return;
+            }
+        }
+
+        config.save();
+        println!("Configuration updated successfully!");
+        return;
+    }
 
     let tasks_file_path = &config.tasks_file_path;
     

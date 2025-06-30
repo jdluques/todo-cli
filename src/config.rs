@@ -25,10 +25,14 @@ impl Config {
 
         let tasks_path = Path::new(&config.tasks_file_path);
         if !tasks_path.exists() {
-            println!("Creating tasks file at: {}", config.tasks_file_path);
+            println!("Creating tasks storage file at: {}", config.tasks_file_path);
             fs::write(&config.tasks_file_path, "[]").expect("Unable to create tasks file");
         }
 
         config
+    }
+    
+    pub fn save(&self) {
+        confy::store("todo_cli", None, self).unwrap();
     }
 }
