@@ -1,5 +1,4 @@
-use crate::models;
-use crate::utils;
+use crate::{models, utils};
 
 pub fn add_task(tasks: &mut Vec<models::Task>) {
     let name = utils::text_input("Enter task name:").unwrap_or_default();

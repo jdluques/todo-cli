@@ -1,5 +1,4 @@
-use crate::models;
-use crate::utils;
+use crate::{models, utils};
 
 pub fn delete_task(tasks: &mut Vec<models::Task>) {
     if tasks.is_empty() {

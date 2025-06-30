@@ -3,7 +3,6 @@ mod table;
 mod utils;
 mod commands;
 
-
 fn main() {
     let mut tasks = vec![
         models::Task{ name: String::from("Task 1"), status: models::TaskStatus::NotStarted },
