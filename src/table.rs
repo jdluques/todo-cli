@@ -1,7 +1,14 @@
 use comfy_table::{Cell, Row, Table};
-use crate::models;
+
+use crate::{
+    models,
+    utils::terminal
+};
 
 pub fn render_table(tasks: &[models::Task]) {
+    terminal::clear_screen();
+    terminal::move_cursor_to_top();
+
     let mut table = Table::new();
     table.set_header(vec!["Not Started", "In Progress", "Completed"]);
 
@@ -22,5 +29,8 @@ pub fn render_table(tasks: &[models::Task]) {
     ]);
 
     table.add_row(row);
-    println!("{table}");
+    
+    let mut table_content = table.to_string();
+    table_content.push_str("\n");
+    terminal::write_at_position(0, 0, &table_content);
 }
