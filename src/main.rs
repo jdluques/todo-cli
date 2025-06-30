@@ -2,19 +2,17 @@ mod models;
 mod table;
 mod utils;
 mod commands;
+mod config;
 
 fn main() {
+    let config = config::Config::load();
+
+    let tasks_file_path = &config.tasks_file_path;
+    
     utils::terminal::init_screen();
 
     let result = std::panic::catch_unwind(|| {
-        let mut tasks = vec![
-            models::Task{ name: String::from("Task 1"), status: models::TaskStatus::NotStarted },
-            models::Task{ name: String::from("Task 2"), status: models::TaskStatus::InProgress },
-            models::Task{ name: String::from("Task 3"), status: models::TaskStatus::Completed },
-            models::Task{ name: String::from("Task 4"), status: models::TaskStatus::Completed },
-            models::Task{ name: String::from("Task 5"), status: models::TaskStatus::NotStarted },
-            models::Task{ name: String::from("Task 6"), status: models::TaskStatus::NotStarted },
-        ];
+        let mut tasks = utils::storage::load_tasks(tasks_file_path);
 
         loop {
             table::render_table(&tasks);
@@ -27,6 +25,8 @@ fn main() {
                 Some("Exit") | None => break,
                 _ => (),
             }
+
+            utils::storage::save_tasks(tasks_file_path, &tasks);
         }
     });
 
