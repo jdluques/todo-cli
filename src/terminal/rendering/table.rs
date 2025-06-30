@@ -2,7 +2,7 @@ use comfy_table::{Cell, Row, Table};
 
 use crate::{
     task_model,
-    utils::terminal
+    terminal::rendering::screen
 };
 
 #[derive(Debug, Clone)]
@@ -14,8 +14,8 @@ pub enum RenderType {
 pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
     match render_type {
         RenderType::Interactive => {
-            terminal::clear_screen();
-            terminal::move_cursor_to_top();
+            screen::clear_screen();
+            screen::move_cursor_to_top();
         },
         RenderType::Visual => (),
     }
@@ -47,7 +47,7 @@ pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
         RenderType::Interactive => {
             let mut table_content = table.to_string();
             table_content.push_str("\n");
-            terminal::write_at_position(0, 0, &table_content);
+            screen::write_at_position(0, 0, &table_content);
         },
         RenderType::Visual => println!("{table}"),
     }

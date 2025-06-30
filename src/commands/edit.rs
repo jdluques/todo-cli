@@ -1,6 +1,6 @@
 use crate::{
     task_model,
-    utils::prompt
+    utils::prompts
 };
 
 pub fn edit_task(tasks: &mut Vec<task_model::Task>) {
@@ -10,7 +10,7 @@ pub fn edit_task(tasks: &mut Vec<task_model::Task>) {
 
     let task_names: Vec<&str> = tasks.iter().map(|task| task.name.as_str()).collect();
 
-    match prompt::select_option("Choose a task to edit", &task_names) {
+    match prompts::select_option("Choose a task to edit", &task_names) {
         Some(selected_task) => {
             let selected_task = selected_task.to_string();
             if let Some(task) = tasks.iter_mut().find(|task| task.name == selected_task) {
@@ -19,7 +19,7 @@ pub fn edit_task(tasks: &mut Vec<task_model::Task>) {
                     options.push("Priority");
                 }
 
-                match prompt::select_option("Choose an attribute to edit:", &options) {
+                match prompts::select_option("Choose an attribute to edit:", &options) {
                     Some("Name") => edit_name(task),
                     Some("Status") => edit_status(task),
                     Some("Priority") => edit_priority(task),
@@ -32,12 +32,12 @@ pub fn edit_task(tasks: &mut Vec<task_model::Task>) {
 }
 
 fn edit_name(task: &mut task_model::Task) {
-    let new_name = prompt::text_input("New name:").unwrap_or(task.name.clone());
+    let new_name = prompts::text_input("New name:").unwrap_or(task.name.clone());
     task.name = new_name;
 }
 
 fn edit_status(task: &mut task_model::Task) {
-    let selected_status = prompt::select_option("Select new task status:", &["Not Started", "In Progress", "Completed"])
+    let selected_status = prompts::select_option("Select new task status:", &["Not Started", "In Progress", "Completed"])
                            .unwrap_or("Not Started");
 
     let task_status = match selected_status {
@@ -55,7 +55,7 @@ fn edit_status(task: &mut task_model::Task) {
 }
 
 fn edit_priority(task: &mut task_model::Task) {
-    let selected_priority = prompt::select_option("Select new task priority:", &["Low", "Medium", "High"])
+    let selected_priority = prompts::select_option("Select new task priority:", &["Low", "Medium", "High"])
                                      .unwrap_or("Low");
     
     let task_priority = match selected_priority {
