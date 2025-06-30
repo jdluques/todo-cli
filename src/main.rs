@@ -1,4 +1,4 @@
-mod models;
+mod task_model;
 mod table;
 mod utils;
 mod commands;
@@ -36,7 +36,7 @@ fn execute_program(tasks_file_path: &String) {
         let mut tasks = utils::storage::load_tasks(tasks_file_path);
 
         loop {
-            table::render_table(&tasks, table::RenderType::Interactive);
+            table::render_table(&mut tasks, table::RenderType::Interactive);
 
             let options = vec!["Add Task", "Delete Task", "Edit Task", "Exit"];
             match utils::prompt::select_option("Choose an action:", &options) {

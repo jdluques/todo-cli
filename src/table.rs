@@ -1,7 +1,7 @@
 use comfy_table::{Cell, Row, Table};
 
 use crate::{
-    models,
+    task_model,
     utils::terminal
 };
 
@@ -11,7 +11,7 @@ pub enum RenderType {
     Visual,
 }
 
-pub fn render_table(tasks: &[models::Task], render_type: RenderType) {
+pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
     match render_type {
         RenderType::Interactive => {
             terminal::clear_screen();
@@ -20,17 +20,18 @@ pub fn render_table(tasks: &[models::Task], render_type: RenderType) {
         RenderType::Visual => (),
     }
     
-
     let mut table = Table::new();
     table.set_header(vec!["Not Started", "In Progress", "Completed"]);
 
     let (mut not_started, mut in_progress, mut completed) = (vec![], vec![], vec![]);
 
+    tasks.sort_by(|a, b| b.priority.cmp(&a.priority));
     for task in tasks {
+        let task_entry =  format!("{} {}", priority_emoji(&task.priority), task.name.clone());
         match task.status {
-            models::TaskStatus::NotStarted => not_started.push(task.name.clone()),
-            models::TaskStatus::InProgress => in_progress.push(task.name.clone()),
-            models::TaskStatus::Completed => completed.push(task.name.clone()),
+            task_model::TaskStatus::NotStarted => not_started.push(task_entry),
+            task_model::TaskStatus::InProgress => in_progress.push(task_entry),
+            task_model::TaskStatus::Completed => completed.push(task_entry),
         }
     }
 
@@ -49,5 +50,14 @@ pub fn render_table(tasks: &[models::Task], render_type: RenderType) {
             terminal::write_at_position(0, 0, &table_content);
         },
         RenderType::Visual => println!("{table}"),
+    }
+}
+
+fn priority_emoji(priority: &task_model::TaskPriority) -> &str {
+    match priority {
+        task_model::TaskPriority::Low => "\u{1F7E2}",
+        task_model::TaskPriority::Medium => "\u{26A0}",
+        task_model::TaskPriority::High => "\u{1F6A8}",
+        task_model::TaskPriority::Complete => "\u{2705}",
     }
 }

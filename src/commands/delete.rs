@@ -1,9 +1,9 @@
 use crate::{
-    models,
+    task_model,
     utils::prompt
 };
 
-pub fn delete_task(tasks: &mut Vec<models::Task>) {
+pub fn delete_task(tasks: &mut Vec<task_model::Task>) {
     if tasks.is_empty() {
         return;
     }
