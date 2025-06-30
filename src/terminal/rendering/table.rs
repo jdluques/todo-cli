@@ -45,8 +45,7 @@ pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
     
     match render_type {
         RenderType::Interactive => {
-            let mut table_content = table.to_string();
-            table_content.push_str("\n");
+            let table_content = format!("{}\n", table.to_string());
             screen::write_at_position(0, 0, &table_content);
         },
         RenderType::Visual => println!("{table}"),
