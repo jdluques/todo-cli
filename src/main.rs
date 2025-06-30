@@ -16,22 +16,27 @@ fn main() {
         cli::flags_actions::handle_config::handle_config(config_params, &mut config);
     }
     else {
-        execute_program(&config);
+        let tasks_file_path = &config.tasks_file_path;
+        
+        if args.visual {
+            cli::flags_actions::handle_visual::handle_visual(tasks_file_path);
+        }
+        else {
+            execute_program(tasks_file_path);
+        }
     }
 
     
 }
 
-fn execute_program(config: &config::Config) {
-    let tasks_file_path = &config.tasks_file_path;
-    
+fn execute_program(tasks_file_path: &String) {
     utils::terminal::init_screen();
 
     let result = std::panic::catch_unwind(|| {
         let mut tasks = utils::storage::load_tasks(tasks_file_path);
 
         loop {
-            table::render_table(&tasks);
+            table::render_table(&tasks, table::RenderType::Interactive);
 
             let options = vec!["Add Task", "Delete Task", "Edit Task", "Exit"];
             match utils::prompt::select_option("Choose an action:", &options) {

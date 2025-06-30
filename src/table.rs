@@ -5,9 +5,21 @@ use crate::{
     utils::terminal
 };
 
-pub fn render_table(tasks: &[models::Task]) {
-    terminal::clear_screen();
-    terminal::move_cursor_to_top();
+#[derive(Debug, Clone)]
+pub enum RenderType {
+    Interactive,
+    Visual,
+}
+
+pub fn render_table(tasks: &[models::Task], render_type: RenderType) {
+    match render_type {
+        RenderType::Interactive => {
+            terminal::clear_screen();
+            terminal::move_cursor_to_top();
+        },
+        RenderType::Visual => (),
+    }
+    
 
     let mut table = Table::new();
     table.set_header(vec!["Not Started", "In Progress", "Completed"]);
@@ -30,7 +42,12 @@ pub fn render_table(tasks: &[models::Task]) {
 
     table.add_row(row);
     
-    let mut table_content = table.to_string();
-    table_content.push_str("\n");
-    terminal::write_at_position(0, 0, &table_content);
+    match render_type {
+        RenderType::Interactive => {
+            let mut table_content = table.to_string();
+            table_content.push_str("\n");
+            terminal::write_at_position(0, 0, &table_content);
+        },
+        RenderType::Visual => println!("{table}"),
+    }
 }
