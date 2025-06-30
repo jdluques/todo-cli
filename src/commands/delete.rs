@@ -5,7 +5,6 @@ use crate::{
 
 pub fn delete_task(tasks: &mut Vec<models::Task>) {
     if tasks.is_empty() {
-        println!("No tasks to delete.");
         return;
     }
 
@@ -16,6 +15,6 @@ pub fn delete_task(tasks: &mut Vec<models::Task>) {
             let selected_task = selected_task.to_string();
             tasks.retain(|task| task.name != selected_task);
         },
-        None => println!("No task selected."),
+        None => (),
     }
 }

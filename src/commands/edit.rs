@@ -5,7 +5,6 @@ use crate::{
 
 pub fn edit_task(tasks: &mut Vec<models::Task>) {
     if tasks.is_empty() {
-        println!("No tasks to edit.");
         return;
     }
 
@@ -38,6 +37,6 @@ pub fn edit_task(tasks: &mut Vec<models::Task>) {
                 }
             }
         },
-        None => println!("No task selected."),
+        None => (),
     }
 }
