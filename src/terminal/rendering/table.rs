@@ -27,7 +27,7 @@ pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
 
     tasks.sort_by(|a, b| b.priority.cmp(&a.priority));
     for task in tasks {
-        let task_entry =  format!("{} {}", priority_emoji(&task.priority), task.name.clone());
+        let task_entry =  format!("{} {}", priority_icon(&task.priority), task.name.clone());
         match task.status {
             task_model::TaskStatus::NotStarted => not_started.push(task_entry),
             task_model::TaskStatus::InProgress => in_progress.push(task_entry),
@@ -52,11 +52,11 @@ pub fn render_table(tasks: &mut [task_model::Task], render_type: RenderType) {
     }
 }
 
-fn priority_emoji(priority: &task_model::TaskPriority) -> &str {
+fn priority_icon(priority: &task_model::TaskPriority) -> &str {
     match priority {
         task_model::TaskPriority::Low => "\u{1F7E2}",
-        task_model::TaskPriority::Medium => "\u{26A0}",
-        task_model::TaskPriority::High => "\u{1F6A8}",
+        task_model::TaskPriority::Medium => "\u{1F7E1}",
+        task_model::TaskPriority::High => "\u{1F534}",
         task_model::TaskPriority::Complete => "\u{2705}",
     }
 }
