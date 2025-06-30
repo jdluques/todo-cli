@@ -17,10 +17,11 @@ fn main() {
     loop {
         table::render_table(&tasks);
 
-        let options = vec!["Add Task", "Delete Task", "Exit"];
+        let options = vec!["Add Task", "Delete Task", "Edit Task", "Exit"];
         match utils::select_option("Choose an action:", &options) {
             Some("Add Task") => commands::add::add_task(&mut tasks),
             Some("Delete Task") => commands::delete::delete_task(&mut tasks),
+            Some("Edit Task") => commands::edit::edit_task(&mut tasks),
             Some("Exit") | None => break,
             _ => (),
         }
