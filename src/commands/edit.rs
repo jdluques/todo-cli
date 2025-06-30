@@ -43,7 +43,10 @@ fn edit_status(task: &mut task_model::Task) {
     let task_status = match selected_status {
         "Not Started" => task_model::TaskStatus::NotStarted,
         "In Progress" => task_model::TaskStatus::InProgress,
-        "Completed" => task_model::TaskStatus::Completed,
+        "Completed" => {
+            task.priority = task_model::TaskPriority::Complete;
+            task_model::TaskStatus::Completed
+        }
         _ => task_model::TaskStatus::NotStarted,
     };
 
