@@ -701,7 +701,7 @@ dependencies = [
 
 [[package]]
 name = "todo_cli"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "clap",
  "comfy-table",
